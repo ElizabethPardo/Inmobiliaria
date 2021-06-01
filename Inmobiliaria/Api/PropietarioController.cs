@@ -159,25 +159,14 @@ namespace Inmobiliaria.Api
                 var res = contexto.Propietario.AsNoTracking().FirstOrDefault(x => x.Email == usuario  && x.Email == propietario.Email);
                 if ((ModelState.IsValid) && (res != null))
                 {
-                    if (propietario.Clave == "null") {
-                        propietario.Clave =res.Clave;
-                        contexto.Propietario.Update(propietario);
-                        contexto.SaveChanges();
-                    } 
-                    else {
-                        string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: propietario.Clave,
-                        salt: System.Text.Encoding.ASCII.GetBytes(config["Salt"]),
-                        prf: KeyDerivationPrf.HMACSHA1,
-                        iterationCount: 1000,
-                        numBytesRequested: 256 / 8));
-                        propietario.Clave = hashed;
+                    
+                        
                         propietario.Id = res.Id;
                         contexto.Propietario.Update(propietario);
                         contexto.SaveChanges();
                        
 
-                    }
+                    
                     return Ok(propietario);
                 }
 
